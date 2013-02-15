@@ -35,6 +35,17 @@ gcdByQuotremRecursive := function(m, n)
   end if;
 end function;
 
+extGcd := function(a, b)
+  if b eq 0 then return 1, 0;
+  else
+    q, r := Quotrem(a, b);
+    s, t := $$(b, r);
+    return t, s - q * t;
+  end if;
+end function;
+
+extGcd(-12, 124);
+
 runGCD := procedure(gcd)
 t1 := Cputime();
 for x := -500 to 500 do
@@ -47,8 +58,8 @@ print t2;
 end procedure;
 
 /*runGCD(gcdBySubtraction);*/
-runGCD(gcdByQuotrem);
-runGCD(gcdByQuotremRecursive);
-runGCD(GCD);
+/*runGCD(gcdByQuotrem);*/
+/*runGCD(gcdByQuotremRecursive);*/
+/*runGCD(GCD);*/
 
 // vim: ft=magma expandtab ts=2 sw=2
