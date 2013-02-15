@@ -1,0 +1,28 @@
+* use Magma's built in Quotrem to speed up your integer-gcd algoritm
+[ perhaps: try to get a feeling for how much it speeds up on large
+inputs -- use "Cputime" or "time"]
+
+* extend the algorithm to the "extended integer gcd" that finds for x, y
+besides gcd  g also
+multipliers s, t such that  s*x+t*y = g
+
+* understand how this will allow you find *inverses* in a finite field
+of p (prime) elements,
+and write a version that returns such inverse fast (say for a prime of
+200 digits)
+
+* extend the Euclidean algorithms (gcd and extended) to make them work
+for any pair of univariate polynomials
+over a field (not the reals or complexes)
+
+* understand how the gcd algorithm relates to continued fractions; write
+a function that returns
+the (finite) continued fraction for any rational number
+
+* do the same for elements of function fields over a finite ground field
+(after understanding the question)
+
+Perhaps for later:
+
+* gcd's for multivariate polynomials
+* the Chinese remainder algorithm
