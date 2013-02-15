@@ -44,7 +44,24 @@ extGcd := function(a, b)
   end if;
 end function;
 
-extGcd(-12, 124);
+inverse := function(n, p)
+  s, _ := extGcd(n, p);
+  return s mod p;
+end function;
+
+/*extGcd(-12, 124);*/
+
+CFprime := function(a, b)
+  q, r := Quotrem(a, b);
+  if r eq 0 then return [* q *];
+  else
+    return Append($$(b, r), q);
+  end if;
+end function;
+
+CF := function(a, b)
+  return Reverse(CFprime(a, b));
+end function;
 
 runGCD := procedure(gcd)
 t1 := Cputime();
