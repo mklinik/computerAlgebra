@@ -68,6 +68,8 @@ function multiplyKaratsuba (F, G)
 end function;
 
 
+// Zips two sequences.
+// ( s0, t0, s1, t1, s2, t2, ... )
 // s and t must be of the same length
 function zip(s, t)
   result := [];
