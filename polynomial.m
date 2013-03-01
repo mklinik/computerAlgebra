@@ -68,4 +68,47 @@ function multiplyKaratsuba (F, G)
 end function;
 
 
-// vim: ft=magma expandtab ts=2 sw=2
+// s and t must be of the same length
+function zip(s, t)
+  result := [];
+  for i := 1 to #s do
+    Append(~result, s[i]);
+    Append(~result, t[i]);
+  end for;
+  return result;
+end function;
+
+
+// Discrete Fourier Transform
+function FFT(k, f, w)
+  if k eq 0
+    then
+      return [get(f, 0)];
+    else
+      nDiv2 := 2 ^ (k - 1);
+
+      r0 := [ get(f, j) + get(f, j + nDiv2)        : j in [0..nDiv2-1]];
+      r1 := [(get(f, j) - get(f, j + nDiv2)) * w^j : j in [0..nDiv2-1]];
+
+      return zip($$(k - 1, r0, w^2), $$(k - 1, r1, w^2));
+  end if;
+end function;
+
+
+// The inverse FFT
+function FFTinv(k, f, w)
+  return [(1 / (2^k)) * a : a in FFT(k, f, w^(-1))];
+end function;
+
+
+procedure foobar()
+  F := FiniteField(13);
+  /*f := [F!2, F!3, F!4, F!2];*/
+  f := [F!3, F!4, F!2];
+  g := FFT(2, f, 8);
+  g;
+  h := FFTinv(2, g, 8);
+  h;
+end procedure;
+
+// vim: ft=magma expandtab ts=2 sw=2 nocindent
