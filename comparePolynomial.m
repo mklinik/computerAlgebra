@@ -18,7 +18,7 @@
 
 load "polynomial.m";
 
-MAX_DEGREE := 3000
+MAX_DEGREE := 3000;
 
 // Runs the given polynomial multiplication algorithm with polynomials of
 // increasing degree, and output the running time on stdout.
@@ -44,7 +44,7 @@ end function;
 // is the smallest number such that d < 2^k where d is the degree of the
 // polynomials we want to multiply.  If you increase the value MAX_DEGREE, adapt
 // p accordingly.
-p := 12289
+p := 12289;
 
 // use this snippet to calculate an appropriate prime number to use as the field
 // size
