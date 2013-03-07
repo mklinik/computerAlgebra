@@ -1,3 +1,8 @@
+// File gcd.m
+
+// Several variations of calculating the greatest common divisor of two numbers
+
+// Calculates the GCD of two numbers by repeated subtraction.
 gcdBySubtraction := function(M, N)
   m := M lt 0 select -M else M;
   n := N lt 0 select -N else N;
@@ -13,6 +18,8 @@ gcdBySubtraction := function(M, N)
   return m;
 end function;
 
+// Calculates the GCD of M and N using quotient and remainder.
+// This is an iterative algorithm.
 gcdByQuotrem := function(M, N)
   m := M lt 0 select -M else M;
   n := N lt 0 select -N else N;
@@ -27,6 +34,8 @@ gcdByQuotrem := function(M, N)
   return m;
 end function;
 
+// Calculates the GCD of m and n using quotient and remainder.
+// This is a recursive algorithm.
 gcdByQuotremRecursive := function(m, n)
   if n eq 0 then return m;
   else
@@ -35,6 +44,7 @@ gcdByQuotremRecursive := function(m, n)
   end if;
 end function;
 
+// The extended Euclidean algorithm.
 extGcd := function(a, b)
   if b eq 0 then return 1, 0;
   else
@@ -49,9 +59,9 @@ inverse := function(n, p)
   return s mod p;
 end function;
 
-/*extGcd(-12, 124);*/
-
-CFprime := function(a, b)
+// Calculates the continued fraction representation of a rational number.
+// The result is the sequence of coefficients in reverse order
+CF_ := function(a, b)
   q, r := Quotrem(a, b);
   if r eq 0 then return [* q *];
   else
@@ -59,8 +69,11 @@ CFprime := function(a, b)
   end if;
 end function;
 
+// Calculates the continued fraction representation of a rational number.
+// The rational number is given by its numerator a and denominator b: a/b
+// Returns the sequence of coefficients of the CF representation.
 CF := function(a, b)
-  return Reverse(CFprime(a, b));
+  return Reverse(CF_(a, b));
 end function;
 
 runGCD := procedure(gcd)
