@@ -1,4 +1,6 @@
 set terminal png
 set output "polynomial_measurements.png"
 set grid
+set xlabel "degree of polynomials"
+set ylabel "time (seconds)"
 plot [:] [-1:] for [IDX=0:3] 'out.txt' i IDX u 1:2 w lines title columnheader(1)
