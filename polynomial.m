@@ -48,6 +48,11 @@ function minus(s, t)
   return [get(s, i-1) - get(t, i-1) : i in [1..Max(#s, #t)]];
 end function;
 
+// Multiplies two sequences point-wise
+function multiplyPointwise(s, t)
+  return [get(s, i-1) * get(t, i-1) : i in [1..Max(#s, #t)]];
+end function;
+
 function multiplyKaratsuba (F, G)
   if #F lt 2 and #G lt 2
     then
@@ -82,7 +87,7 @@ end function;
 
 
 // Discrete Fourier Transform
-function FFT(k, f, w)
+function DFT(k, f, w)
   if k eq 0
     then
       return [get(f, 0)];
@@ -97,19 +102,37 @@ function FFT(k, f, w)
 end function;
 
 
-// The inverse FFT
-function FFTinv(k, f, w)
-  return [(1 / (2^k)) * a : a in FFT(k, f, w^(-1))];
+// The inverse DFT
+function DFTinv(k, f, w)
+  return [(1 / (2^k)) * a : a in DFT(k, f, w^(-1))];
 end function;
 
+// Actual implementation of the polynomial multiplication.
+// Don't use this function directly, use multiplyDFT instead.
+function multiplyDFT_(f, g, w, k)
+  a := DFT(k, f, w);
+  b := DFT(k, g, w);
+  c := multiplyPointwise(a, b);
+  return DFTinv(k, c, w);
+end function;
+
+// Multiplies two polynomials using the DFT method.
+// Both f and g must be sequences of elements of a finite field.
+// f must be non-empty
+function multiplyDFT(f, g)
+  F := Parent(f[1]);
+  k := 1 + Floor(Log(2, Max(#f - 1, #g - 1)));
+  w := RootOfUnity(2^k, F);
+  return multiplyDFT_(f, g, w, k);
+end function;
 
 procedure foobar()
   F := FiniteField(13);
   /*f := [F!2, F!3, F!4, F!2];*/
   f := [F!3, F!4, F!2];
-  g := FFT(2, f, 8);
+  g := DFT(2, f, 8);
   g;
-  h := FFTinv(2, g, 8);
+  h := DFTinv(2, g, 8);
   h;
 end procedure;
 
