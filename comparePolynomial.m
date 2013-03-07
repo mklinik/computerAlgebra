@@ -3,7 +3,7 @@ load "polynomial.m";
 procedure run(f, name, coerce)
   print "\n\n";
   print "\"", name, "\"";
-  for i := 2 to 2000 by 51 do
+  for i := 2 to 3000 by 55 do
     t1 := Cputime();
     /*for j := 0 to 1 do*/
       _ := f(coerce([1..i]), coerce([1..i]));
@@ -18,7 +18,7 @@ function multiplyBuiltin(f, g)
   return f * g;
 end function;
 
-F := FiniteField(13);
+F := FiniteField(12289);
 P := PolynomialRing(F);
 function coerce(s)
   return [F!x : x in s];
