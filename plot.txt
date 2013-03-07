@@ -1,4 +1,3 @@
 set terminal png
 set output "polynomial_measurements.png"
-plot for [IDX=0:1] 'out.txt' i IDX u 1:2 w lines title columnheader(1)
-plot [0:2000] [-1:17] for [IDX=0:3] 'tmp.txt' i IDX u 1:2 w lines title columnheader(1)
+plot [:] [-1:] for [IDX=0:3] 'out.txt' i IDX u 1:2 w lines title columnheader(1)
