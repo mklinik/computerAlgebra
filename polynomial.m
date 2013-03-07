@@ -77,12 +77,16 @@ end function;
 // ( s0, t0, s1, t1, s2, t2, ... )
 // s and t must be of the same length
 function zip(s, t)
-  result := [];
+  if #s eq 0 then return [];
+  else
+  result := [s[1], t[1]];
+  /*result := [];*/
   for i := 1 to #s do
     Append(~result, s[i]);
     Append(~result, t[i]);
   end for;
   return result;
+  end if;
 end function;
 
 
