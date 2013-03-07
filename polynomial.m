@@ -39,12 +39,12 @@ multiplyClassically := function(a, b)
 end function;
 
 // Adds two sequences point-wise
-function plus(s, t)
+function addPointwise(s, t)
   return [get(s, i-1) + get(t, i-1) : i in [1..Max(#s, #t)]];
 end function;
 
 // Subtracts two sequences point-wise
-function minus(s, t)
+function subtractPointwise(s, t)
   return [get(s, i-1) - get(t, i-1) : i in [1..Max(#s, #t)]];
 end function;
 
@@ -63,12 +63,12 @@ function multiplyKaratsuba (F, G)
       G0, G1 := split(G, n);
       F0G0 := $$(F0, G0);
       F1G1 := $$(F1, G1);
-      F0F1G0G1 := $$(plus(F0, F1), plus(G0, G1));
+      F0F1G0G1 := $$(addPointwise(F0, F1), addPointwise(G0, G1));
 
       x := shift(F1G1, n*2);
-      y := minus(minus(F0F1G0G1,F0G0), F1G1);
+      y := subtractPointwise(subtractPointwise(F0F1G0G1,F0G0), F1G1);
 
-      return plus(plus(x, shift(y, n)), F0G0);
+      return addPointwise(addPointwise(x, shift(y, n)), F0G0);
   end if;
 end function;
 
