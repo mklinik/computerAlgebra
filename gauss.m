@@ -54,6 +54,32 @@ procedure gaussDivisionFree(~M)
   end for;
 end procedure;
 
+procedure gaussFractionFree(~M)
+  // for each max(columns, rows):
+  divisor := 1;
+  for col := 1 to Min(NumberOfRows(M), NumberOfColumns(M)) do
+    // find a row fnz where the first element is not zero
+    fnz := firstNonZeroRow(col, M);
+    if fnz ne 0 then
+      // swap fnz with the current row
+      SwapRows(~M, col, fnz);
+      // for each row below the current row:
+      for row := col + 1 to NumberOfRows(M) do
+        // if 1st element is non-zero,
+        curElt := M[row, col];
+        if curElt ne 0 then
+          // update all elements in this row
+          for j := col to NumberOfColumns(M) do
+            M[row,j] :=
+              (M[col,col] * M[row,j] - M[col,j] * curElt) / divisor;
+          end for;
+        end if;
+      end for;
+    end if;
+    divisor := M[col, col];
+  end for;
+end procedure;
+
 procedure test()
   SetSeed(0);
 
@@ -79,8 +105,9 @@ procedure test()
   print m;
   print "-----";
   /*print firstNonZeroRow(1, m);*/
-  gaussDivisionFree(~m);
   /*gaussSimple(~m);*/
+  /*gaussDivisionFree(~m);*/
+  gaussFractionFree(~m);
   print m;
 end procedure;
 
