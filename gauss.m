@@ -56,7 +56,9 @@ end procedure;
 
 procedure test()
   SetSeed(0);
-  m := RandomMatrix(FiniteField(13), 5, 15);
+
+  /*m := RandomMatrix(FiniteField(13), 5, 15);*/
+
   /*m := Matrix(RationalField(), 6, 4,*/
   /*[[1, 1, 2, 3]*/
   /*,[2, 5, 6, 7]*/
@@ -65,11 +67,20 @@ procedure test()
   /*,[4, 3, 4, 5]*/
   /*,[4, 3, 4, 5]*/
   /*]);*/
+
+  // the example on page 392
+  m := Matrix(IntegerRing(), 4, 5,
+    [[ 3,  4, -2,  1, -2]
+    ,[ 1, -1,  2,  2,  7]
+    ,[ 4, -3,  4, -3,  2]
+    ,[-1,  1,  6, -1,  1]
+    ]);
+
   print m;
   print "-----";
   /*print firstNonZeroRow(1, m);*/
-  /*gaussDivisionFree(~m);*/
-  gaussSimple(~m);
+  gaussDivisionFree(~m);
+  /*gaussSimple(~m);*/
   print m;
 end procedure;
 
