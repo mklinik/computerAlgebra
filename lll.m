@@ -13,7 +13,7 @@ function mu(i, j, F, G)
 end function;
 
 
-function blaat(i, F, G)
+function fancySum(i, F, G)
   result := mu(i, 1, F, G) * G[1];
   for j := 2 to i-1 do
     result +:= mu(i, j, F, G) * G[j];
@@ -25,7 +25,7 @@ end function;
 function GSO(F)
   G := F;
   for i := 2 to NumberOfRows(F) do
-    G[i] := F[i] - blaat(i, F, G);
+    G[i] := F[i] - fancySum(i, F, G);
   end for;
   M := F;
   for i := 1 to NumberOfRows(F) do
@@ -39,12 +39,13 @@ function GSO(F)
 end function;
 
 
-function moo(i, Gstar)
+function needsSwap(Gstar, i)
   return
     InnerProduct(Gstar[i-1], Gstar[i-1])
     gt
     2 * InnerProduct(Gstar[i], Gstar[i]);
 end function;
+
 
 function reducedBasis(F)
   G := F;
@@ -57,7 +58,7 @@ function reducedBasis(F)
       G[i] := G[i] - Floor(M[i,j] + 0.5) * G[j];
       Gstar, M := GSO(G);
     end for;
-    if i gt 1 and moo(i, Gstar)
+    if i gt 1 and needsSwap(Gstar, i)
       then
         SwapRows(~G, i-1, i);
         Gstar, M := GSO(G);
@@ -71,20 +72,50 @@ function reducedBasis(F)
 end function;
 
 
+function randomIndependentSquareMatrix(n)
+   M := MatrixAlgebra(RationalField(), n) !
+     [[Random(-500, 500) : x in [1..n]] : y in [1..n]];
+  for i := 1 to n do
+    M[i,i] := 0;
+  end for;
+  return M;
+end function;
+
+
 procedure main()
-  /*F := Matrix(RealField(2), 3, 3,*/
-              /*[RealField(2) ! x : x in*/
+  /*F := Matrix(RationalField(2), 3, 3,*/
+              /*[RationalField(2) ! x : x in*/
               /*[1, 1, 0*/
               /*,1, 0, 1*/
               /*,0, 1, 1*/
               /*]]);*/
-  F := Matrix(RealField(2), 3, 3,
-              [RealField(2) ! x : x in
-              [ 1,  1,  1
-              ,-1,  0,  2
-              , 3,  5,  6
-              ]]);
-  print reducedBasis(F);
+  /*F := Matrix(RationalField(2), 3, 3,*/
+              /*[RationalField(2) ! x : x in*/
+              /*[ 1,  1,  1*/
+              /*,-1,  0,  2*/
+              /*, 3,  5,  6*/
+              /*]]);*/
+  /*F := Matrix(RationalField(2), 3, 3,*/
+              /*[RationalField(2) ! x : x in*/
+              /*[ 1,  0,  0*/
+              /*, 0,  1,  0*/
+              /*, 1,  1,  0*/
+              /*]]);*/
+  /*F := Matrix(RationalField(2), 3, 3,*/
+              /*[RationalField(2) ! x : x in*/
+              /*[ 1, -1,  3*/
+              /*, 1,  0,  5*/
+              /*, 1,  2,  6*/
+              /*]]);*/
+  F := Matrix(RationalField(), 4, 4,
+              [RationalField() ! x : x in
+                [ 1, 1, 1, 0
+                , 1, 1, 0, 1
+                , 1, 0, 1, 1
+                , 0, 1, 1, 1
+                ]
+              ]);
+  print reducedBasis(randomIndependentSquareMatrix(5));
 end procedure;
 
 // vim: ft=magma expandtab ts=2 sw=2
