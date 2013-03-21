@@ -39,25 +39,52 @@ function GSO(F)
 end function;
 
 
-/*function reducedBasis(F)*/
-  /*G := GSO(F);*/
-  /*return 0;*/
-/*end function;*/
+function moo(i, Gstar)
+  return
+    InnerProduct(Gstar[i-1], Gstar[i-1])
+    gt
+    2 * InnerProduct(Gstar[i], Gstar[i]);
+end function;
+
+function reducedBasis(F)
+  G := F;
+  Gstar, M := GSO(F);
+
+  n := NumberOfRows(F);
+  i := 2;
+  while i le n do
+    for j := i-1 to 1 by -1 do
+      G[i] := G[i] - Floor(M[i,j] + 0.5) * G[j];
+      Gstar, M := GSO(G);
+    end for;
+    if i gt 1 and moo(i, Gstar)
+      then
+        SwapRows(~G, i-1, i);
+        Gstar, M := GSO(G);
+        i -:= 1;
+      else
+        i +:= 1;
+    end if;
+  end while;
+
+  return G;
+end function;
+
 
 procedure main()
+  /*F := Matrix(RealField(2), 3, 3,*/
+              /*[RealField(2) ! x : x in*/
+              /*[1, 1, 0*/
+              /*,1, 0, 1*/
+              /*,0, 1, 1*/
+              /*]]);*/
   F := Matrix(RealField(2), 3, 3,
               [RealField(2) ! x : x in
-              [1, 1, 0
-              ,1, 0, 1
-              ,0, 1, 1
+              [ 1,  1,  1
+              ,-1,  0,  2
+              , 3,  5,  6
               ]]);
-  /*F := Matrix(3, 3,*/
-              /*[1.0, 1.0, 0.0*/
-              /*,1.0, 0.0, 1.0*/
-              /*,0.0, 1.0, 1.0*/
-              /*]);*/
-  print F;
-  print GSO(F);
+  print reducedBasis(F);
 end procedure;
 
 // vim: ft=magma expandtab ts=2 sw=2
