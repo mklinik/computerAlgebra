@@ -27,7 +27,15 @@ function GSO(F)
   for i := 2 to NumberOfRows(F) do
     G[i] := F[i] - blaat(i, F, G);
   end for;
-  return G;
+  M := F;
+  for i := 1 to NumberOfRows(F) do
+  for j := 1 to NumberOfColumns(F) do
+    M[i,j] := i eq j select 1
+         else i lt j select 0
+         else        mu(i, j, F, G);
+  end for;
+  end for;
+  return G, M;
 end function;
 
 
