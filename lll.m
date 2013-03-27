@@ -1,3 +1,9 @@
+
+/*
+ * The mu matrix as a function in i and j
+ *
+ * Helper function for `GSO`
+ */
 function mu(i, j, F, Fstar)
   ipG := InnerProduct(Fstar[j], Fstar[j]);
   return ipG eq 0 select 0 else
@@ -7,6 +13,9 @@ function mu(i, j, F, Fstar)
 end function;
 
 
+/*
+ * Helper function for `GSO`
+ */
 function fancySum(i, F, Fstar)
   result := mu(i, 1, F, Fstar) * Fstar[1];
   for j := 2 to i-1 do
@@ -16,6 +25,9 @@ function fancySum(i, F, Fstar)
 end function;
 
 
+/*
+ * Calculates the Gram-Schmidt orthogonal basis of the matrix F
+ */
 function GSO(F)
   Fstar := F;
   for i := 2 to NumberOfRows(F) do
@@ -25,6 +37,9 @@ function GSO(F)
 end function;
 
 
+/*
+ * Helper function for `reducedBasis`
+ */
 function needsSwap(Gstar, i)
   return
     InnerProduct(Gstar[i-1], Gstar[i-1])
@@ -33,6 +48,11 @@ function needsSwap(Gstar, i)
 end function;
 
 
+/*
+ * Calculates the reduced basis of the given lattice.
+ *
+ * The rows of the matrix are regarded as the base vectors of the lattice.
+ */
 function reducedBasis(F)
   G := F;
   Gstar := GSO(F);
@@ -58,6 +78,11 @@ function reducedBasis(F)
 end function;
 
 
+/*
+ * Generates a random square matrix with linearly independent rows.
+ *
+ * For testing.
+ */
 function randomIndependentSquareMatrix(n)
    M := MatrixAlgebra(RationalField(), n) !
      [[Random(-500, 500) : x in [1..n]] : y in [1..n]];
@@ -67,17 +92,30 @@ function randomIndependentSquareMatrix(n)
   return M;
 end function;
 
+/*
+ * Generates a random square matrix, not necessarily linearly independent.
+ *
+ * For testing.
+ */
 function randomSquareMatrix(n)
    return MatrixAlgebra(RationalField(), n) !
      [[Random(-500, 500) : x in [1..n]] : y in [1..n]];
 end function;
 
+/*
+ * Generates a random n x m matrix.
+ *
+ * For testing.
+ */
 function randomMatrix(n, m)
    return Matrix(RationalField(),
      [[Random(-500, 500) : x in [1..n]] : y in [1..m]]);
 end function;
 
 
+/*
+ * Determines whether the matrix F is actually a reduced basis
+ */
 function isReduced(F)
   Fstar := GSO(F);
   result := true;
@@ -152,6 +190,7 @@ procedure main()
   /*F := randomSquareMatrix(12);*/
   /*F := randomIndependentSquareMatrix(10);*/
   /*F := randomMatrix(10, 11);*/
+
   print F;
   print isReduced(F);
   print "---";
@@ -160,4 +199,4 @@ procedure main()
   print isReduced(R);
 end procedure;
 
-// vim: ft=magma expandtab ts=2 sw=2
+// vim: ft=magma
