@@ -35,17 +35,6 @@ function foldl(f, z, xs)
 end function;
 
 /*
- * Left fold, assumes that the list has at least one element.
- */
-function foldl1(f, xs)
-  acc := xs[1];
-  for i:=2 to #xs do
-    acc := f(acc, xs[i]);
-  end for;
-  return acc;
-end function;
-
-/*
  * Returns all elements of the sequence that satisfy the predicate
  */
 function filter(p, xs)
@@ -110,7 +99,7 @@ end function;
  * of m1.
  */
 function divides(m1, m2)
-  if #m2 eq 0 then return false; end if;
+  if #m2 eq 0 then return false; end if; // m2 is the minus infinity thingy
   return all(id, zipWith(greaterThanEqual, m2, m1));
 end function;
 
@@ -129,14 +118,23 @@ function divideMonomial(m1, m2)
   return zipWith(minus, m1, m2);
 end function;
 
+/*
+ * Multiplies two monomials by adding the representing lists elementwise
+ */
 function multiplyMonomial(m1, m2)
   return zipWith(plus, m1, m2);
 end function;
 
+/*
+ * Divides two terms by dividing the coefficients and the monomials
+ */
 function divideTerm(t1, t2)
   return <t1[1] / t2[1], divideMonomial(t1[2], t2[2])>;
 end function;
 
+/*
+ * Multiplies two terms by multiplying the coefficients and the monomials
+ */
 function multiplyTerm(t1, t2)
   return <t1[1] * t2[1], multiplyMonomial(t1[2], t2[2])>;
 end function;
