@@ -110,6 +110,7 @@ end function;
  * of m1.
  */
 function divides(m1, m2)
+  if #m2 eq 0 then return false; end if;
   return all(id, zipWith(greaterThanEqual, m2, m1));
 end function;
 
@@ -185,6 +186,49 @@ function reduce(B, f)
   end if;
 end function;
 
+/*
+ * We get the least common multiple of two monomials by pointwise taking the maximum exponent
+ */
+function lcmMonomial(m1, m2)
+  return zipWith(Max, m1, m2);
+end function;
+
+function S(f, g)
+  lmf := leadingMonomial(f);
+  lmg := leadingMonomial(g);
+  ltf := leadingTerm(f);
+  ltg := leadingTerm(g);
+  lcmfgTerm := <1, lcmMonomial(lmf, lmg)>;
+  left := multiplyTermPolynomial(divideTerm(lcmfgTerm, leadingTerm(f)), f);
+  right := multiplyTermPolynomial(divideTerm(lcmfgTerm, leadingTerm(g)), g);
+  return subtractPolynomial(left, right);
+end function;
+
+function unorderedPairs(S)
+  return [<S[i], S[j]> : j in [i..#S], i in [1..#S] ];
+end function;
+
+function groebnerBasis(B_)
+  B := B_;
+  P := unorderedPairs(B);
+  while #P ne 0 do
+    f, g := Explode(P[1]);
+    Remove(~P, 1);
+    c := reduce(B, S(f, g));
+    if c ne zeroPolynomial
+    then
+      Append(~B, c);
+      P cat:= [<b, c> : b in B];
+    end if;
+  end while;
+  return B;
+end function;
+
+procedure isGroebnerBasis(B)
+  print "S(b, c) reduces to 0 modulo B for each pair b, c in B:";
+  print all(func<x | reduce(B, x) eq zeroPolynomial>, [S(B[i], B[j]) : i in [1..#B], j in [1..#B]] );
+end procedure;
+
 procedure main()
   // f := [<1000, [5, 1]>, <2, [1, 2]>];
   // print(f);
@@ -205,7 +249,8 @@ procedure main()
   /*print(subtractPolynomial(g, h));*/
   /*print(subtractPolynomial(f, g));*/
 
-  print(reduce(B, f));
+  /*print(reduce(B, f));*/
+  isGroebnerBasis(groebnerBasis(B));
 end procedure;
 
 // main();
