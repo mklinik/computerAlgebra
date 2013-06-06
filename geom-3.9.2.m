@@ -8,4 +8,4 @@ t := p * (p - a) - b2^2;
 
 I := ideal<S | h1, h2, t * z - 1>;
 
-NormalForm(a^0, I);
+NormalForm(S!1, I);
