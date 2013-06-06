@@ -14,7 +14,7 @@
  * always smaller than any other sequence.
  */
 
-N := 2;
+N := 5;
 zeroPolynomial := [];
 zeroMonomial := [ 0 : x in [1..N] ];
 zeroTerm := <0, zeroMonomial>;

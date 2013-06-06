@@ -1,4 +1,4 @@
-load "groebner.m"
+load "groebner.m" // don't forget to set N=2 in groebner.m
 
 procedure main()
   h := [ <1, [2, 0]>, <-2, [1, 1]>, <1, [0, 2]> ];
