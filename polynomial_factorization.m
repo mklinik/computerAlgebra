@@ -1,8 +1,5 @@
-q := 3;
-F := FiniteField(q);
-R<x> := PolynomialRing(F);
-
-function distinctDegreeFactorization(f)
+function distinctDegreeFactorization(f, q, R)
+  R<x> := R;
   hi := x;
   fi := f;
   i := 0;
@@ -23,7 +20,8 @@ function distinctDegreeFactorization(f)
   return g;
 end function;
 
-function randomPolynomialWithDegreeLess(n)
+function randomPolynomialWithDegreeLess(n, F, R)
+  R<x> := R;
   result := R!0;
   for i := 0 to n-1 do
     c := Random(F);
@@ -36,10 +34,10 @@ end function;
 // * q is an odd prime power and a divisor of n, such that all irreducible
 //   factors of f have degree d
 // We represent failure by a list of successes
-function equalDegreeSplitting(f, d)
+function equalDegreeSplitting(f, d, q, F, R)
   n := Degree(f);
 
-  a := randomPolynomialWithDegreeLess(n);
+  a := randomPolynomialWithDegreeLess(n, F, R);
   if Degree(a) le 0 then return []; end if;
 
   g1 := GCD(a, f);
@@ -52,25 +50,27 @@ function equalDegreeSplitting(f, d)
 end function;
 
 
-function equalDegreeFactorization(f, d)
+function equalDegreeFactorization(f, d, q, F, R)
   n := Degree(f);
   if n eq d then return [f]; end if;
 
   tmp := [];
   success := false;
   while not success do
-    tmp := equalDegreeSplitting(f, d);
+    tmp := equalDegreeSplitting(f, d, q, F, R);
     success := #tmp gt 0;
   end while;
   g := tmp[1];
 
-  return equalDegreeFactorization(g, d)
-    cat equalDegreeFactorization(f div g, d);
+  return equalDegreeFactorization(g, d, q, F, R)
+    cat equalDegreeFactorization(f div g, d, q, F, R);
 end function;
 
 
 
-function polynomialFactorization(f)
+function polynomialFactorization(f, q)
+  F := FiniteField(q);
+  R<x> := PolynomialRing(F);
   hi := x;
   vi := f div LeadingCoefficient(f);
   U := {};
@@ -85,7 +85,7 @@ function polynomialFactorization(f)
     g := GCD(hi - x, vim1);
 
     if g ne 1 then
-      gs := equalDegreeFactorization(g, i);
+      gs := equalDegreeFactorization(g, i, q, F, R);
 
       vi := vim1;
       for j:=1 to #gs do
