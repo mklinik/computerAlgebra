@@ -42,6 +42,7 @@ function testFactorization(f, q)
   return check eq f;
 end function;
 
+
 // Exercise 14.3
 q := 5;
 F := FiniteField(q);
@@ -49,6 +50,7 @@ R<x> := PolynomialRing(F);
 f := x^17 + 2*x^15 + 4*x^13 + x^12 + 2*x^11 + 2*x^10 + 3*x^9
   + 4*x^8 + 4*x^4 + 3*x^3 + 2*x^2 + 4*x;
 testFactorization(f, q);
+
 
 // Exercise 14.29
 q := 3;
@@ -63,3 +65,17 @@ f4 := x^6 - 2*x^5 - 4*x^4 + 6*x^3 + 7*x^2 - 4*x - 4;
 testFactorization(f4, q);
 f5 := x^6 - 6*x^5 + 12*x^4 - 6*x^3 - 9*x^2 + 12*x - 4;
 testFactorization(f5, q);
+
+
+// Exercise 14.23
+q := 5;
+R<x> := PolynomialRing(FiniteField(q));
+f := x^1000+2;
+polynomialFactorization(f, q);
+
+
+// Exercise 14.13
+q := 2591;
+R<x> := PolynomialRing(FiniteField(q));
+f := x^2 - 1005;
+polynomialFactorization(f, q);
