@@ -18,3 +18,6 @@ for i:=0 to 100 do
   end if;
 end for;
 print success;
+
+
+equalDegreeFactorization(x^4 + x^3 + x - 1, 2);

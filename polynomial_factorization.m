@@ -23,8 +23,8 @@ function distinctDegreeFactorization(f)
   return g;
 end function;
 
-function randomPolynomialWithDegree(n)
-  result := 0;
+function randomPolynomialWithDegreeLess(n)
+  result := R!0;
   for i := 0 to n-1 do
     c := Random(F);
     result := result + (c * x^i);
@@ -39,7 +39,7 @@ end function;
 function equalDegreeSplitting(f, d)
   n := Degree(f);
 
-  a := randomPolynomialWithDegree(n);
+  a := randomPolynomialWithDegreeLess(n);
   if Degree(a) le 0 then return []; end if;
 
   g1 := GCD(a, f);
@@ -49,4 +49,21 @@ function equalDegreeSplitting(f, d)
 
   g2 := GCD(b-1, f);
   if (g2 ne 1) and (g2 ne f) then return [g2]; else return []; end if;
+end function;
+
+
+function equalDegreeFactorization(f, d)
+  n := Degree(f);
+  if n eq d then return [f]; end if;
+
+  tmp := [];
+  success := false;
+  while not success do
+    tmp := equalDegreeSplitting(f, d);
+    success := #tmp gt 0;
+  end while;
+  g := tmp[1];
+
+  return equalDegreeFactorization(g, d)
+    cat equalDegreeFactorization(f div g, d);
 end function;
