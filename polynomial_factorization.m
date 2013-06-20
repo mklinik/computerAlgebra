@@ -1,3 +1,4 @@
+// Algorithm 14.3
 function distinctDegreeFactorization(f, q, R)
   R<x> := R;
   hi := x;
@@ -30,6 +31,7 @@ function randomPolynomialWithDegreeLess(n, F, R)
   return result;
 end function;
 
+// Algorithm 14.8
 // * f is a squarefree monic polynomail of degree n > 0
 // * q is an odd prime power and a divisor of n, such that all irreducible
 //   factors of f have degree d
@@ -50,6 +52,7 @@ function equalDegreeSplitting(f, d, q, F, R)
 end function;
 
 
+// Algorithm 14.10
 function equalDegreeFactorization(f, d, q, F, R)
   n := Degree(f);
   if n eq d then return [f]; end if;
@@ -67,7 +70,7 @@ function equalDegreeFactorization(f, d, q, F, R)
 end function;
 
 
-
+// Algorithm 14.13
 function polynomialFactorization(f, q)
   F := FiniteField(q);
   R<x> := PolynomialRing(F);
