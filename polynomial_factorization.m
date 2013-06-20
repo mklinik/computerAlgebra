@@ -1,5 +1,6 @@
 q := 3;
-R<x> := PolynomialRing(FiniteField(q));
+F := FiniteField(q);
+R<x> := PolynomialRing(F);
 
 function distinctDegreeFactorization(f)
   hi := x;
@@ -20,4 +21,32 @@ function distinctDegreeFactorization(f)
   until fi eq 1;
 
   return g;
+end function;
+
+function randomPolynomialWithDegree(n)
+  result := 0;
+  for i := 0 to n-1 do
+    c := Random(F);
+    result := result + (c * x^i);
+  end for;
+  return result;
+end function;
+
+// * f is a squarefree monic polynomail of degree n > 0
+// * q is an odd prime power and a divisor of n, such that all irreducible
+//   factors of f have degree d
+// We represent failure by a list of successes
+function equalDegreeSplitting(f, d)
+  n := Degree(f);
+
+  a := randomPolynomialWithDegree(n);
+  if Degree(a) le 0 then return []; end if;
+
+  g1 := GCD(a, f);
+  if g1 ne 1 then return [g1]; end if;
+
+  b := a^((q^d - 1) div 2) mod f;
+
+  g2 := GCD(b-1, f);
+  if (g2 ne 1) and (g2 ne f) then return [g2]; else return []; end if;
 end function;
