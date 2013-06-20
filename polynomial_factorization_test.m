@@ -74,8 +74,22 @@ f := x^1000+2;
 polynomialFactorization(f, q);
 
 
+// Exercise 14.12
+q := 17;
+R<x> := PolynomialRing(FiniteField(q));
+f := x^18 - 7*x^17 + 4*x^16 + 2*x^15 - x*13 - 7*x^12 + 4*x^11 + 7*x^10 +4*x^9
+  - 3*x^8 -3*x^7 +7*x^6 - 7*x^5 + 7*x^4 + 7*x^3 - 3*x^2 + 5*x + 5;
+polynomialFactorization(f, q);
+
+
+
 // Exercise 14.13
 q := 2591;
 R<x> := PolynomialRing(FiniteField(q));
 f := x^2 - 1005;
 polynomialFactorization(f, q);
+
+q := 2591;
+R<x> := PolynomialRing(FiniteField(q));
+f := x^2 - 1005;
+rootsOverFiniteField(f, q);

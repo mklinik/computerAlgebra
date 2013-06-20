@@ -1,3 +1,22 @@
+function powerMod(a,n,f) //gives a^n mod f
+  nl:=[];
+  while n ne 0 do
+    n, r := Quotrem(n,2);
+    Append(~nl,r);
+  end while;
+  k:=#nl;
+  i:=k-1;
+  b:=a;
+  while i ge 1 do
+    if nl[i] eq 1 then
+      b:=(b^2 mod f)*a mod f;
+    else b:=b^2 mod f;
+    end if;
+    i:= i-1;
+  end while;
+  return b;
+end function;
+
 // Algorithm 14.3
 function distinctDegreeFactorization(f, q, R)
   R<x> := R;
@@ -10,7 +29,7 @@ function distinctDegreeFactorization(f, q, R)
     fim1 := fi;
 
     i := i + 1;
-    hi := (him1 ^ q) mod f;
+    hi := powerMod(him1, q, f);
 
     Append(~g, GCD(hi - x, fim1));
 
@@ -45,7 +64,8 @@ function equalDegreeSplitting(f, d, q, F, R)
   g1 := GCD(a, f);
   if g1 ne 1 then return [g1]; end if;
 
-  b := a^((q^d - 1) div 2) mod f;
+  // b := a^((q^d - 1) div 2) mod f;
+  b := powerMod(a, (q^d - 1) div 2, f);
 
   g2 := GCD(b-1, f);
   if (g2 ne 1) and (g2 ne f) then return [g2]; else return []; end if;
@@ -84,7 +104,8 @@ function polynomialFactorization(f, q)
     vim1 := vi;
     i +:= 1;
 
-    hi := him1^q mod f;
+    // hi := him1^q mod f;
+    hi := powerMod(him1, q, f);
     g := GCD(hi - x, vim1);
 
     if g ne 1 then
@@ -104,4 +125,19 @@ function polynomialFactorization(f, q)
   until vi eq 1;
 
   return U;
+end function;
+
+
+// Algorithm 14.15
+function rootsOverFiniteField(f, q)
+  F := FiniteField(q);
+  R<x> := PolynomialRing(F);
+  h := x^q mod f;
+
+  g := GCD(h - x, f);
+  r := Degree(g);
+  if r eq 0 then return {}; end if;
+
+  factors := equalDegreeFactorization(g, r, q, F, R);
+  return [ x - factor : factor in factors ];
 end function;
