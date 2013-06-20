@@ -27,10 +27,39 @@ print success;
 SequenceToSet(equalDegreeFactorization(x^4 + x^3 + x - 1, 2, q, F, R))
     eq {x^2 + x + 2, x^2 + 1};
 
-// Exercise 14.3  -- but this is in F(5)!
+function testFactorization(f, q)
+  result := SetToSequence(polynomialFactorization(f, q));
+  check := 1;
+  for i:=1 to #result do
+    g, m := Explode(result[i]);
+    check *:= g^m;
+  end for;
+  if not check eq f then
+    print f;
+    print result;
+    print check;
+  end if;
+  return check eq f;
+end function;
+
+// Exercise 14.3
 q := 5;
 F := FiniteField(q);
 R<x> := PolynomialRing(F);
 f := x^17 + 2*x^15 + 4*x^13 + x^12 + 2*x^11 + 2*x^10 + 3*x^9
   + 4*x^8 + 4*x^4 + 3*x^3 + 2*x^2 + 4*x;
-polynomialFactorization(f, q);
+testFactorization(f, q);
+
+// Exercise 14.29
+q := 3;
+R<x> := PolynomialRing(FiniteField(q));
+f1 := x^6 - x^5 - 4*x^4 + 2*x^3 + 5*x^2 - x - 2;
+testFactorization(f1, q);
+f2 := x^6 - 3*x^5 + 6*x^3 - 3*x^2 - 3*x + 2;
+testFactorization(f2, q);
+f3 := x^5 - 2*x^4 - 2*x^3 + 4*x^2 + x - 2;
+testFactorization(f3, q);
+f4 := x^6 - 2*x^5 - 4*x^4 + 6*x^3 + 7*x^2 - 4*x - 4;
+testFactorization(f4, q);
+f5 := x^6 - 6*x^5 + 12*x^4 - 6*x^3 - 9*x^2 + 12*x - 4;
+testFactorization(f5, q);
