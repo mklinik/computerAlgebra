@@ -67,3 +67,38 @@ function equalDegreeFactorization(f, d)
   return equalDegreeFactorization(g, d)
     cat equalDegreeFactorization(f div g, d);
 end function;
+
+
+
+function polynomialFactorization(f)
+  hi := x;
+  vi := f div LeadingCoefficient(f);
+  U := {};
+  i := 0;
+
+  repeat
+    him1 := hi;
+    vim1 := vi;
+    i +:= 1;
+
+    hi := him1^q mod f;
+    g := GCD(hi - x, vim1);
+
+    if g ne 1 then
+      gs := equalDegreeFactorization(g, i);
+
+      vi := vim1;
+      for j:=1 to #gs do
+        e := 0;
+        while vi mod gs[j] eq 0 do
+          vi := vi div gs[j];
+          e +:= 1;
+        end while;
+        Include(~U, <gs[j], e>);
+      end for;
+
+    end if;
+  until vi eq 1;
+
+  return U;
+end function;

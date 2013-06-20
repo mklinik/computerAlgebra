@@ -20,4 +20,10 @@ end for;
 print success;
 
 
-equalDegreeFactorization(x^4 + x^3 + x - 1, 2);
+SequenceToSet(equalDegreeFactorization(x^4 + x^3 + x - 1, 2))
+    eq {x^2 + x + 2, x^2 + 1};
+
+// Exercise 14.3  -- but this is in F(5)!
+f := x^17 + 2*x^15 + 4*x^13 + x^12 + 2*x^11 + 2*x^10 + 3*x^9
+  + 4*x^8 + 4*x^4 + 3*x^3 + 2*x^2 + 4*x;
+polynomialFactorization(f);
